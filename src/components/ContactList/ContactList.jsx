@@ -1,4 +1,6 @@
-import PropTypes from 'prop-types';
+import React from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { deleteContact } from 'redux/contactsSlise';
 import {
   ContactListWrapper,
   ContactListItem,
@@ -6,38 +8,31 @@ import {
   ContactButton,
 } from './ContactList.styled';
 
-export const ContactList = ({ visibleContact, deleteContact }) => {
-  return (
-    <div>
-      <ContactListWrapper>
-        {visibleContact.map(contact => {
-          return (
-            <ContactListItem key={contact.id}>
-              <div>
-                <ContactName>{contact.name}:</ContactName>
-                <p>{contact.number}</p>
-              </div>
-              <ContactButton
-                type="button"
-                onClick={() => deleteContact(contact.id)}
-              >
-                Delete
-              </ContactButton>
-            </ContactListItem>
-          );
-        })}
-      </ContactListWrapper>
-    </div>
-  );
-};
+export const ContactList = () => {
+  const contacts = useSelector(state => state.contacts.contactsList);
+  const filter = useSelector(state => state.filter);
+  const dispatch = useDispatch();
 
-ContactList.propTypes = {
-  vilibleContact: PropTypes.arrayOf(
-    PropTypes.shape({
-      id: PropTypes.string.isRequired,
-      name: PropTypes.string.isRequired,
-      number: PropTypes.string.isRequired,
-    })
-  ),
-  deleteContact: PropTypes.func.isRequired,
+  const filteredContacts = contacts.filter(contact =>
+    contact.name.toLowerCase().includes(filter.toLowerCase())
+  );
+
+  return (
+    <ContactListWrapper>
+      {filteredContacts.map(contact => (
+        <ContactListItem key={contact.id}>
+          <div>
+            <ContactName>{contact.name}:</ContactName>
+            <p>{contact.number}</p>
+          </div>
+          <ContactButton
+            type="button"
+            onClick={() => dispatch(deleteContact(contact.id))}
+          >
+            Delete
+          </ContactButton>
+        </ContactListItem>
+      ))}
+    </ContactListWrapper>
+  );
 };
