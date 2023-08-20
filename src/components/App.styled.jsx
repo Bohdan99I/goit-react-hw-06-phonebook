@@ -7,6 +7,7 @@ export const Wrapper = styled.div`
   width: 400px;
   border-radius: 8px;
 `;
+
 export const H2 = styled.h2`
   text-align: center;
   font-size: 30px;

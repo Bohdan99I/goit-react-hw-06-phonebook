@@ -15,9 +15,11 @@ export const ContactForm = () => {
       case 'name':
         setName(value);
         break;
+      
       case 'number':
         setNumber(value);
         break;
+      
       default:
         break;
     }
